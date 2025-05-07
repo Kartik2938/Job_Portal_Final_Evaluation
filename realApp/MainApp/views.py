@@ -38,7 +38,7 @@ def register_user(request):
                 'company_name': company_name
             }
 
-            response = requests.post('http://127.0.0.1:5000/api/register', json=data)
+            response = requests.post('https://krish9876.pythonanywhere.com/api/register', json=data)
 
             if response.status_code == 201:
                 messages.success(request, 'User registered successfully!')
@@ -59,7 +59,7 @@ def login_user(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        response = requests.post('http://127.0.0.1:5000/api/login', json={
+        response = requests.post('https://krish9876.pythonanywhere.com/api/login', json={
             'email': email,
             'password': password
         })
@@ -107,7 +107,7 @@ def manage_employer_jobs(request):
             'location': request.POST.get('location'),
             'salary': request.POST.get('salary')
         }
-        add_response = requests.post('http://127.0.0.1:5000/employer/job', headers=headers, json=job_data)
+        add_response = requests.post('https://krish9876.pythonanywhere.com/employer/job', headers=headers, json=job_data)
         if add_response.status_code == 201:
             messages.success(request, 'Job added successfully.')
         else:
@@ -122,7 +122,7 @@ def manage_employer_jobs(request):
             'location': request.POST.get('location'),
             'salary': request.POST.get('salary')
         }
-        update_response = requests.put(f'http://127.0.0.1:5000/employer/job/{job_id}', headers=headers, json=updated_data)
+        update_response = requests.put(f'https://krish9876.pythonanywhere.com/employer/job/{job_id}', headers=headers, json=updated_data)
         if update_response.status_code == 200:
             messages.success(request, 'Job updated successfully.')
         else:
@@ -131,7 +131,7 @@ def manage_employer_jobs(request):
     # Handle job deletion
     elif request.method == 'POST' and 'delete_job' in request.POST:
         job_id = request.POST.get('job_id')
-        delete_response = requests.delete(f'http://127.0.0.1:5000/employer/job/{job_id}', headers=headers)
+        delete_response = requests.delete(f'https://krish9876.pythonanywhere.com/employer/job/{job_id}', headers=headers)
         if delete_response.status_code == 200:
             messages.success(request, 'Job deleted successfully.')
         else:
@@ -139,7 +139,7 @@ def manage_employer_jobs(request):
 
     # Fetch updated job list
     try:
-        jobs_response = requests.get('http://127.0.0.1:5000/employer/jobs', headers=headers)
+        jobs_response = requests.get('https://krish9876.pythonanywhere.com/employer/jobs', headers=headers)
         if jobs_response.status_code == 200:
             jobs = jobs_response.json().get('jobs', [])
             return render(request, 'employer_jobs.html', {'jobs': jobs})
@@ -165,7 +165,7 @@ def view_all_jobs(request):
 
     try:
         # Update the URL to the correct Flask API endpoint for job seekers
-        response = requests.get('http://127.0.0.1:5000/api/all_jobs', headers=headers)
+        response = requests.get('https://krish9876.pythonanywhere.com/api/all_jobs', headers=headers)
 
         if response.status_code == 200:
             jobs = response.json().get('jobs', [])
@@ -236,7 +236,7 @@ def apply_for_job(request, job_id):
     }
 
     try:
-        response = requests.post(f'http://127.0.0.1:5000/api/apply/{job_id}', headers=headers)
+        response = requests.post(f'https://krish9876.pythonanywhere.com/api/apply/{job_id}', headers=headers)
     except requests.exceptions.RequestException as e:
         messages.error(request, f'Error connecting to API: {str(e)}')
         return redirect('view_all_jobs')
